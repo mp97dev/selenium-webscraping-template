@@ -182,7 +182,11 @@ def test_beautifulsoup_usage():
         </html>
         """
         
-        soup = BeautifulSoup(html, 'lxml')
+        # Try lxml parser first, fall back to html.parser
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except Exception:
+            soup = BeautifulSoup(html, 'html.parser')
         scraper = WebScraper()
         
         # Test extracting text

@@ -181,8 +181,12 @@ class WebScraper:
         time.sleep(wait_time)
         
         # Get page source and parse with BeautifulSoup
+        # Using lxml parser for better performance; falls back to html.parser if unavailable
         page_source = self.driver.page_source
-        soup = BeautifulSoup(page_source, 'lxml')
+        try:
+            soup = BeautifulSoup(page_source, 'lxml')
+        except Exception:
+            soup = BeautifulSoup(page_source, 'html.parser')
         
         return soup
     
