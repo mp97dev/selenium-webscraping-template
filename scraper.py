@@ -154,7 +154,7 @@ class WebScraper:
                 self.session_active = True
                 return True
                 
-        except Exception as e:
+        except (TimeoutException, NoSuchElementException, WebDriverException) as e:
             print(f"Login failed with error: {str(e)}")
             return False
     
@@ -185,7 +185,9 @@ class WebScraper:
         page_source = self.driver.page_source
         try:
             soup = BeautifulSoup(page_source, 'lxml')
-        except Exception:
+        except (ImportError, LookupError) as e:
+            # Fallback to built-in parser if lxml is not available or has issues
+            print(f"Warning: lxml parser not available ({e}), using html.parser")
             soup = BeautifulSoup(page_source, 'html.parser')
         
         return soup

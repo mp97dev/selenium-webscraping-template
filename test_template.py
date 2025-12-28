@@ -185,7 +185,7 @@ def test_beautifulsoup_usage():
         # Try lxml parser first, fall back to html.parser
         try:
             soup = BeautifulSoup(html, 'lxml')
-        except Exception:
+        except (ImportError, LookupError):
             soup = BeautifulSoup(html, 'html.parser')
         scraper = WebScraper()
         
